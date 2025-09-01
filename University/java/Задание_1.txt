@@ -1,0 +1,37 @@
+import java.util.Scanner;
+public class Main
+{
+	public static void main(String[] args)
+	{
+	Scanner sc = new Scanner(System.in);
+		    System.out.println("Введите номер месяца");
+		    int a = 0;
+		    int year = 0;
+		    a = sc.nextInt();
+		    switch (a)
+		    {
+		        case 1:
+		        case 4:
+		        case 6:
+		        case 9:
+		        case 11: System.out.println("В месяце под данным номером насчитывается 30 дней"); break;
+		        case 3:
+		        case 5:
+		        case 7:
+		        case 8:
+		        case 10:
+		        case 12: System.out.println("В месяце под данным номером насчитывается 31 день"); break;
+		        case 2:
+		            
+		                System.out.println("Похоже, что вы ввели февраль, для уточнения информации введите год");
+		                year = sc.nextInt();
+		                if ((year % 400 == 0) || ((year % 4 == 0) && (year % 100 != 0)))
+		                System.out.println("В феврале данного года насчитывается 29 дней");
+		                else
+		                System.out.println("В феврале данного года насчитывается 28 дней");
+		                break;
+		        default: System.out.println("Извините, но в нашей системе счисления времени присутствуют всего 12 целочисленных месяцев"); break;
+		    }
+		    
+	}
+}

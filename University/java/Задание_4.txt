@@ -1,0 +1,39 @@
+import java.util.Scanner;
+public class Main 
+{
+    public static int sumOfDel(int numb)
+    {
+        int sum = 0;
+        for (int i = 1; i <= numb/2; i++)
+        {
+            if (numb % i == 0)
+            sum = sum + i;
+        }
+        return sum;
+    }
+    
+    public static void main (String[] args)
+    {
+        Scanner sc = new Scanner(System.in);
+        int summa;
+        System.out.println("Проверка на дружественность чисел будет проводиться от:");
+        int begin = sc.nextInt();
+        System.out.println("до:");
+        int ending = sc.nextInt();
+        if (begin > ending)
+        {
+            System.out.println("Начальное и конечное значение будут заменены друг на друга!");
+            begin = begin + ending;
+            ending = begin - ending; 
+            begin = begin - ending;
+        }
+        for (int i = begin; i <= ending; i++)
+        {
+         summa = sumOfDel(i);
+         if (sumOfDel(summa) == i && i < summa)
+         {
+            System.out.println(i + " и " + summa + " являются дружественными ");
+         }
+        }
+    }
+}

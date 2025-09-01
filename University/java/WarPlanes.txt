@@ -1,0 +1,505 @@
+import java.util.*;
+import java.io.*;
+import java.util.EnumSet;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Scanner;
+class WrongPrice extends Exception{}
+class WrongParametrs extends Exception{}
+class Plane implements Serializable{
+    private String model;
+    private String origin;
+    private int price;
+    private int []parametrs = new int [3];
+    private int id;
+    private int count = 0;
+    public Plane(String model, String origin, int price, int[]parametrs) throws WrongPrice, WrongParametrs
+    {
+        if (price<=0) throw new WrongPrice();
+        for (int i = 0; i<3; i++)
+        {
+            if (parametrs[i] <= 0) throw new WrongParametrs();
+        }
+        this.model = model;
+        this.origin = origin;
+        this.price = price;
+        for (int i = 0; i<3; i++)
+        this.parametrs[i] = parametrs[i];
+        count++;
+        this.id = count;
+    }
+    public String get_model(){
+        return this.model;
+    }
+    public String get_origin(){
+        return this.origin;
+    }
+    public int get_price(){
+        return this.price;
+    }
+    public int get_id(){
+        return this.id;
+    }
+    public int get_length(){
+        return this.parametrs[0];
+    }
+    public int get_weidth(){
+        return this.parametrs[1];
+    }
+    public int get_height(){
+        return this.parametrs[2];
+    }
+    public void set_model(String model){
+        this.model = model;
+    }
+    public void set_origin(String origin){
+        this.origin = origin;
+    }
+    public void set_price(int price){
+        this.price = price;
+    }
+    public void set_length(int length){
+        this.parametrs[0] = length;
+    }
+    public void set_weidth(int weidth){
+        this.parametrs[1] = weidth;
+    }
+    public void set_height(int height){
+        this.parametrs[2] = height;
+    }
+    public void set_parametrs(int length, int weidth, int height){
+        this.parametrs[0] = length;
+        this.parametrs[1] = weidth;
+        this.parametrs[2] = height;
+    }
+    public int get_count(){
+        return count;
+    }
+    @Override
+    public String toString(){
+        return "Модель самолета: " + this.model + ". Страна-производитель: " + this.origin + ". Длина, шириша и высота соответственно: " 
+        + this.parametrs[0] + "м., " + this.parametrs[1] + "м., " + this.parametrs[2] + "м. Цена: " + this.price +"$.";
+    }
+}
+class WarPlanes implements Serializable{
+    String name;
+    String adres;
+    private List<Plane> base;
+    public WarPlanes(String name, String adres){
+        this.name = name;
+        this.adres = adres;
+        this.base = new ArrayList<Plane>();
+    }
+    public WarPlanes addPlane(Plane pl){//2
+        base.add(pl);
+        return this;
+import java.util.*;
+import java.io.*;
+import java.util.EnumSet;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Scanner;
+class WrongPrice extends Exception{}
+class WrongParametrs extends Exception{}
+class WrongSeats extends Exception{}
+enum PlaneType{
+    Истребитель,
+    Бомбардировщик,
+    Транспортный,
+    Разведчик,
+    Штурмовик
+}
+class Plane implements Serializable{
+    private String model;
+    private String origin;
+    private int price;
+    private final PlaneType type;
+    private final int seats;
+    private double []parametrs = new double [3];
+    private boolean isRadar;
+    private boolean isAmmunition;
+    private int id;
+   // private int ammo;
+    protected static int count = 0;
+    public Plane(String model, String origin, PlaneType type, boolean isAmmunition, boolean isRadar, int seats, int price, double[]parametrs) throws WrongPrice, WrongParametrs, WrongSeats, IOException
+    {
+        if (price <= 0) throw new WrongPrice();
+        for (int i = 0; i<3; i++)
+        {
+            if (parametrs[i] <= 0) throw new WrongParametrs();
+        }
+        if (seats <= 0) throw new WrongSeats();
+        this.model = model;
+        this.origin = origin;
+        this.isRadar = isRadar;
+        this.isAmmunition = isAmmunition;
+        this.seats = seats;
+        this.type = type;
+        this.price = price;
+        for (int i = 0; i<3; i++)
+        this.parametrs[i] = parametrs[i];
+        count++;
+        this.id = count;
+    }
+    public Plane(String model, String origin, PlaneType type, boolean isAmmunition, boolean isRadar, int seats, int price, double length, double weidth, double height) throws WrongPrice, WrongParametrs, WrongSeats, IOException
+    {
+        if (price <= 0) throw new WrongPrice();
+        if  ( length <=0 || weidth <=0 || height <= 0) throw new WrongParametrs();
+        if (seats <= 0) throw new WrongSeats();
+        this.model = model;
+        this.origin = origin;
+        this.isRadar = isRadar;
+        this.isAmmunition = isAmmunition;
+        this.seats = seats;
+        this.type = type;
+        this.price = price;
+        this.parametrs[0] = length;
+        this.parametrs[1] = weidth;
+        this.parametrs[2] = height;
+        count++;
+        this.id = count;
+    }
+    public String get_model(){
+        return this.model;
+    }
+    public boolean is_radar(){
+        return this.isRadar;
+    }
+    public boolean is_Ammunition(){
+        return this.isAmmunition;
+    }
+    public PlaneType get_type(){
+        return this.type;
+    }
+    public String get_origin(){
+        return this.origin;
+    }
+    public int get_price(){
+        return this.price;
+    }
+    public int get_id(){
+        return this.id;
+    }
+    public double get_length(){
+        return this.parametrs[0];
+    }
+    public double get_weidth(){
+        return this.parametrs[1];
+    }
+    public double get_height(){
+        return this.parametrs[2];
+    }
+    public void set_model(String model){
+        this.model = model;
+    }
+    public void set_origin(String origin){
+        this.origin = origin;
+    }
+    public void set_price(int price){
+        this.price = price;
+    }
+    public void set_length(double length){
+        this.parametrs[0] = length;
+    }
+    public void set_radar(boolean radar){
+        this.isRadar = radar;
+    }
+    public void set_ammunition(boolean ammunition){
+        this.isAmmunition = ammunition;
+    }
+    public void set_weidth(double weidth){
+        this.parametrs[1] = weidth;
+    }
+    public void set_height(double height){
+        this.parametrs[2] = height;
+    }
+    public void set_parametrs(double length, double weidth, double height){
+        this.parametrs[0] = length;
+        this.parametrs[1] = weidth;
+        this.parametrs[2] = height;
+    }
+    public static int get_count(){
+        return count;
+    }
+    @Override
+    public String toString(){
+        return "Модель самолета: " + this.model + ". Страна-производитель: " + this.origin + ". Тип самолета: " + this.type + 
+        ". Количество сидений: " + this.seats + ". Наличие радара: " + this.isRadar + ".\n Наличие боекомплекта: " + this.isAmmunition + ". Длина, шириша и высота соответственно: " 
+        + this.parametrs[0] + "м., " + this.parametrs[1] + "м., " + this.parametrs[2] + "м. Цена(в миллионах долларов): " + this.price +"мил$.";
+    }
+}
+class WarPlanes implements Serializable{
+    String name;
+    String adres;
+    private List<Plane> base;
+    public WarPlanes(String name, String adres) {
+        this.name = name;
+        this.adres = adres;
+        this.base = new ArrayList<Plane>();
+    }
+    public WarPlanes addPlane(Plane pl){//2
+        base.add(pl);
+        return this;
+    }
+    public WarPlanes removePlaneByPos(int pos){//3
+        for (Plane pl: base)
+        {
+            if (base.indexOf(pl) == pos)
+            {
+            base.remove(pl);
+            Plane.count--;
+            break;
+            }
+        }
+        return this;
+    }
+     public WarPlanes changePlane(Plane pl, Plane newpl) {//4
+        int pos = base.indexOf(pl);
+        base.set(pos, newpl);
+        return this;
+    }
+    public boolean findPlane(Plane pl){//5
+        return base.contains(pl);
+    }
+    public ArrayList <Plane> getPlanesHigherThen(double height){//6
+        ArrayList <Plane> list1 = new ArrayList <Plane>();
+        for (Plane pl: base) {
+            if (pl.get_height() >= height)
+                list1.add(pl);
+        }
+        return list1;
+    }
+    public ArrayList <Plane> getPlanesByOrigin(String origin){//7
+        ArrayList <Plane> list1 = new ArrayList <Plane>();
+        for (Plane pl: base) {
+            if (pl.get_origin().equals(origin))
+                list1.add(pl);
+        }
+        return list1;
+    }
+    public WarPlanes loadFromFile(String nameFile) throws IOException, WrongSeats, WrongPrice, WrongParametrs
+    {
+        FileInputStream ifr = new FileInputStream(nameFile);
+        Scanner sr = new Scanner (ifr);
+        Plane pl;
+        while(sr.hasNext()){
+            pl = new Plane(sr.next()/*имя одели*/, sr.next()/*страна*/, PlaneType.valueOf(sr.next())/*Тип самолета*/, sr.nextBoolean()/*Наличие радара*/, 
+            sr.nextBoolean()/*Наличие боекомплекта*/, sr.nextInt()/*Кол-во сидений*/, sr.nextInt()/*Цена*/, sr.nextDouble()/*Длина*/, sr.nextDouble()/*ширина*/, sr.nextDouble()/*высота*/);
+            base.add(pl);
+        }
+        ifr.close();
+        return this;
+    }
+    public void sortbyPrice(){//8
+        Collections.sort(base, new Comparator<Plane>()
+        {@Override
+            public int compare(Plane o1, Plane o2)
+            {
+                if (o1.get_price() == o2.get_price())
+                    return 0;
+                else if (o1.get_price() > o2.get_price())
+                    return 1;
+                else 
+                    return -1;
+            }
+        });
+    }
+    public void sortbyModel(){//9
+        Collections.sort(base, new Comparator<Plane>()
+        {@Override
+            public int compare(Plane o1, Plane o2){
+                return o1.get_model().compareTo(o2.get_model());
+            }
+        });
+    }
+    public Set<Double> getLengthsH(){
+        Set<Double> lengths = new HashSet<Double>();
+        for (Plane pl: base){
+            lengths.add(pl.get_length());
+        }
+        return lengths;
+    }
+    public Set<Double> getLengthsT(){
+        Set<Double>lengths = new TreeSet<Double>();
+        for (Plane pl: base){
+            lengths.add(pl.get_length());
+        }
+        return lengths;
+    }
+    public Set<PlaneType> getTypeE(){
+        EnumSet<PlaneType> types = EnumSet.noneOf(PlaneType.class);
+        for (Plane pl: base){
+            types.add(pl.get_type());
+        }
+        return types;
+    }
+    public void saveToFile(String nameFile) throws IOException
+   {
+        PrintStream pw = new PrintStream(nameFile);
+        for(Plane pl : base)
+        pw.println(pl);
+    }
+    public void forwardPrint(PrintStream printStream){
+        ListIterator<Plane> it = base.listIterator();
+        while(it.hasNext())
+        {
+            printStream.println(it.next()+"\n");
+        }
+    }
+    public void reversePrint(PrintStream printStream){
+        ListIterator<Plane> it = base.listIterator(base.size());
+        while(it.hasPrevious())
+        {
+            printStream.println(it.previous()+"\n");
+        }
+    }
+    @Override 
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("Ангар Самолетов: " + adres + "\n");
+        for (Plane pl: base) 
+        {
+            sb.append(pl);
+            sb.append("\n"+"\n");
+        }
+        return sb.toString();
+    }
+}
+
+
+
+
+public class Main
+{
+	public static void main(String[] args) 
+	{
+	    try
+	    {
+	        WarPlanes first = new WarPlanes("Первым делом", "Гранд-Каньон");//1
+	        first.loadFromFile("input.txt");//2
+	        Scanner sr = new Scanner(System.in);
+	        PrintStream psf = new PrintStream(System.out);
+	        System.out.println("Добро пожаловать в наш ангар! Выберите действие, которое вы хотите сделать!:"+
+	        "\n1.Список всех самолетов"+
+	        "\n2.Список всех самолетов в Обратном порядке"+
+	        "\n3.Узнать Количество самолетов в ангаре"+
+	        "\n4.Оставить только самолеты указанной страны" +
+	        "\n5.Оставить только самолеты выше указанного значения" +
+	        "\n6.Показать также самолеты из подвала (сериализация)" +
+	        "\n7.Отсортировать самолеты по названию модели" +
+	        "\n8.Отсортировать самолеты по цене" +
+	        "\n Для выхода из меню введите 0.");
+	        int choose = 10;
+	        while (choose!=0)
+	        {
+	            System.out.println("Выберите действие, пожалуйста:");
+	            choose  = sr.nextInt();
+	            switch (choose){
+	                case (1):
+	                     System.out.println(" Прямая запись с помощью итераторов: \n");
+	                     first.forwardPrint(psf);//4
+	                     break;
+	                case (2):
+	                      System.out.println("\n Обратная запись с помощью итераторов: \n");
+	                      first.reversePrint(psf);//5
+	                      break;
+	                case (3):
+	                       System.out.println("\n Прямо сейчас в ангаре " + Plane.get_count() + " самолетов.");
+	                       break;
+	                case (4):
+	                       System.out.println("\n Введите страну, самолеты которой вы хотите оставить: ");
+	                       String country = sr.next();
+	                       ArrayList <Plane> second = first.getPlanesByOrigin(country);
+	                       if (second.size() != 0){
+	                            System.out.println("\nСамолеты страны-производителя:" + country);
+	                            System.out.println(second);
+	                       }
+	                       else
+	                            System.out.println("Самолетов выбранной страны у нас нет:(");
+	                        break;
+	                case (5):
+	                       System.out.println("\n Введите значение (в метрах), самолеты выше которого вы хотите оставить (можно дробное): ");
+	                       Double height = sr.nextDouble();
+	                       ArrayList<Plane> third = first.getPlanesHigherThen(height);
+	                       if (third.size() != 0){
+	                            System.out.println("\nСамолеты выше " + height + "м");
+	                            System.out.println(third);
+	                       }
+	                       else
+	                            System.out.println("Самолетов выше вашего значения у нас нет:(");
+	                       break;
+	                case(6):
+	                       System.out.println("Самолеты из ангара и подвала: ");
+	                        FileOutputStream fos = new FileOutputStream("test.txt");
+                            ObjectOutputStream ous = new ObjectOutputStream(fos);                           
+                            ous.writeObject(first);
+                            ous.close();
+                            fos.close();
+                            first.loadFromFile("input2.txt");
+                            System.out.println("\n" + first);
+                            first.saveToFile("output2.txt");
+                            break;
+                    case(7):
+                            System.out.println("отсортируем самолеты по названию модели: ");
+                            first.sortbyModel();
+                            System.out.println(first);
+                            break;
+                    case(8):
+                            System.out.println("отсортируем самолеты по цене:");
+                            first.sortbyPrice();
+                            System.out.println(first);
+                            break;
+	                default:
+	                    System.out.println("Вы ввели несуществующее действие(");
+	                    break;
+	            }
+	        }
+	        System.out.println("Вы вышли из меню!");
+	        /*System.out.println("Уберем самолеты из подвала:");
+            FileInputStream fis = new FileInputStream("test.txt");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            WarPlanes firstnew = (WarPlanes)ois.readObject();
+            ois.close();
+            fis.close();
+            System.out.println(firstnew);*/
+	        System.out.println("Проверка добавления и удаления самолетов.");
+	        //System.out.println(first.toString());//3
+	        Plane p1 = new Plane("Ил-76", "Россия", PlaneType.Транспортный, true, false, 7, 55, 46.6, 50.5, 14.76);
+	        Plane p2 = new Plane("Ил-78", "Китай", PlaneType.Транспортный, true, false, 6, 60, 46.54, 50.5, 14.76);
+	        System.out.println(" Содержит ли наш ангар самолет Ил-76?: " + first.findPlane(p1) + "\n");
+	        System.out.println("Добавим в ангар самолет Ил-76.");
+	        first.addPlane(p1);//6
+	         System.out.println(" Содержит ли наш ангар самолет Ил-76?: " + first.findPlane(p1) + "\n");
+	         System.out.println("Удалим из ангара самолет Ил-76.");
+	        first.removePlaneByPos(8);//7 Удаление по позиции.
+	        System.out.println(" Содержит ли наш ангар самолет Ил-76?: " + first.findPlane(p1) + "\n");
+	         System.out.println("Добавим снова Ил-76 в ангар и обновим его до Ил-78.");
+	        first.addPlane(p1);
+	        first.changePlane(p1, p2);//8
+	        System.out.println(" Содержит ли наш ангар самолет Ил-76?: " + first.findPlane(p1));
+	        System.out.println(" Содержит ли наш ангар самолет Ил-78?: " + first.findPlane(p2) + "\n");
+	        first.saveToFile("output.txt");//10
+	    }
+	    catch (WrongSeats e){
+	        System.out.println("У самолета должно быть хотя бы одно место!");
+	    }
+	    catch (WrongParametrs e){
+	        System.out.println("У одного из ваших самолетов отрицательные параметры!");
+	    }
+	    catch (WrongPrice e){
+	        System.out.println("Вы собираетесь продать один из самолетов по отрицательной цене!");
+	    }
+	    catch (IOException e){
+	        System.out.println("Не удаётся открыть файл!");
+	    }
+	}
+	
+}
+
+

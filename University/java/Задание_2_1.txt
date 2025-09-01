@@ -1,0 +1,52 @@
+import java.util.Arrays;
+import java.util.Scanner;
+public class Main
+{
+	public static void main(String[] args) {
+		System.out.println("Введите кол-во чисел в последовательности");
+		Scanner sc = new Scanner(System.in);
+		int numb = sc.nextInt();
+		int begin_index = 0;
+		int end_index = 0;
+		int buffer = 0;
+		int swap_index = 0;
+		boolean bool = true;
+		int a1[] = new int[numb];
+		System.out.println("Введите последовательность:");
+		for (int i = 0; i<numb; i++){
+		    a1[i]=sc.nextInt();
+		 }
+		System.out.println("Введенная вами последовательность:");
+	        System.out.println(Arrays.toString(a1));
+	     for(int i=1; i<numb; i++)
+	     {
+	        if(a1[i]>=a1[i-1])
+	        {
+	            begin_index = i-1;
+	            while ((a1[i] >= a1[i-1]) && (bool == true)){
+	                if (i == numb - 1)
+	                {
+	                    bool = false;
+	                    i--;
+	                }
+	                i++;
+	            }
+	            if ((i == numb-1) && (a1[i]>a=1[i-1]))
+	                end_index = i;
+	            else 
+	                end_index = i-1;
+	            swap_index = end_index;
+	            for (int j = begin_index; j<=(end_index + begin_index)/2; j++)
+	        {
+	            buffer = a1[j];
+	            a1[j] = a1[swap_index];
+	            a1[swap_index] = buffer; 
+	            swap_index--;
+	        }
+	        }
+	    }
+	    System.out.println("Искомая последовательность:");
+	    System.out.println(Arrays.toString(a1));
+	}
+}
+

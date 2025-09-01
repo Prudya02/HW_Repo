@@ -1,0 +1,21 @@
+import java.util.Scanner;
+import java.util.GregorianCalendar;
+import java.util.Calendar;
+public class Main
+{
+	public static void main(String[] args)
+	{
+	Scanner sc = new Scanner(System.in);
+		    System.out.println("Пожалуйста, введите день, месяц и год");
+		    int day = sc.nextInt();
+		    int month = sc.nextInt();
+		    int year = sc.nextInt();
+		    Calendar Calendar1 = new GregorianCalendar(year, month, day);
+		    Calendar1.add(Calendar1.DATE,1);
+		    System.out.println("Дата следующего дня:");
+		    System.out.println(Calendar1.get(Calendar.DATE) + " " + Calendar1.get(Calendar.MONTH) + " " 
+		        + Calendar1.get(Calendar.YEAR));
+		    
+	}	    
+}
+

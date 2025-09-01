@@ -1,0 +1,38 @@
+import java.util.Scanner;
+public class Main 
+{
+    public static boolean iPalindrom(int numb){
+        int numbCopy = numb;
+        int numbReverse = 0;
+        while (numbCopy>=1)
+        {
+            numbReverse = numbReverse*10+numbCopy%10;
+            numbCopy = numbCopy/10;
+        }
+        if (numb == numbReverse)
+            return true;
+        else
+            return false;
+    }
+    public static void main (String[] args){
+        Scanner sc = new Scanner(System.in);
+        int square;
+        System.out.println("Проверка на палиндром будет проводиться от:");
+        int begin = sc.nextInt();
+        System.out.println("до:");
+        int ending = sc.nextInt();
+        if (begin > ending)
+        {
+            System.out.println("Начальное и конечное значение будут заменены друг на друга!");
+            begin = begin + ending;
+            ending = begin - ending;
+            begin = begin - ending;
+        }
+        for (int i = begin; i <= ending; i++)
+        {
+         square = i*i;
+         if (iPalindrom(i) == true && iPalindrom(square) == true)
+         System.out.println(i + " и его квадрат " + square + " являются палиндромами");
+        }
+    }
+}

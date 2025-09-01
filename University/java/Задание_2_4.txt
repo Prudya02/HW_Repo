@@ -1,0 +1,84 @@
+import java.util.Arrays;
+import java.util.Scanner;
+
+ 
+    
+public class Main
+{
+   public static int make_pal (int numb)
+    {
+        int length = String.valueOf(Math.abs(numb)).length();
+        int a[] = new int[10];
+        int numb_copy = numb;
+        int palindrom = 0;
+        int j = 0;
+        for(int i = 0; i < length; i++)
+	    {
+	        j = numb_copy%10;
+	        a[j]++;
+	        numb_copy/=10;
+	    }
+	    
+    }
+	public static void main(String[] args) {
+		System.out.println("Введите натуральное число");
+		Scanner sc = new Scanner(System.in);
+		int numb = sc.nextInt();
+		int numb_copy = numb;
+    	boolean palin = true;
+		int length = String.valueOf(Math.abs(numb)).length();
+		boolean bool = true;
+	    int a[] = new int [length];
+	    for(int i = 0; i < length; i++)
+	    {
+	        a[i] = numb_copy%10;
+	        numb_copy/=10;
+	    }
+	    Arrays.sort(a);
+	    System.out.println(Arrays.toString(a));
+	    if (length % 2 == 0)
+	    {
+	        int i = 0;
+            while((i < length) && (palin == true))
+            {
+                if (a[i] != a[i+1])
+                    palin = false;
+                i = i+2;
+            }
+            if (palin == true)
+            	System.out.println("Из данного числа можно составить палиндром");
+            else 
+                System.out.println("Из данного числа нельзя составить палиндром");
+	    }
+	    else
+	    {
+	     int i = 0;
+	     int counter = 0;
+            while ((i < length) && (counter<2))
+            {
+                if (a[i] != a[i+1])
+                {
+                    if (i+2 == length)
+                        counter = counter+2;
+                    else
+                        counter++;
+                    i--;
+                }
+                i = i+2;
+            }
+            if (counter<=1)
+            {
+                palin = true;
+            	System.out.println("Из данного числа можно составить палиндром");
+            }
+            else 
+                System.out.println("Из данного числа нельзя составить палиндром");
+	    }
+	    if (palin == true)
+	    {
+	        System.out.println("Палиндром: " +   make_pal(numb));
+	    }
+	}
+}
+
+

@@ -1,0 +1,222 @@
+import java.util.*;
+import java.io.*;
+enum Genre {rock, opera, symphony, pop, country, techno, pank, folk};
+class wrongCode extends Exception{}
+class wrongLength extends Exception{}
+class Music
+{
+    private final int id;
+    private final int length;
+    private int code;
+    private final Genre genre;
+    private final String name;
+    private final String Performer;  
+    private static int count = 0;
+    public Music (String name, Genre genre, int code,String Performer, int length) throws wrongCode, wrongLength
+    {
+        if (code < 0) 
+            throw new wrongCode();
+        if (length<0)
+            throw new wrongLength();
+        count++;
+        this.id = count;
+        this.code = code;
+        this.length = length;
+        this.name = name;
+        this.genre = genre;
+        this.Performer = Performer;
+    }
+    public String get_name(){
+        return this.name;
+    }
+    public String get_Performer(){
+        return this.Performer;
+    }
+    public Genre get_genre(){
+        return this.genre;
+    }
+    public int get_length(){
+        return this.length;
+    }
+    public int get_code(){
+        return this.code;
+    }
+    public static int get_count(){
+        return count;
+    }
+    public int get_id(){
+        return this.id;
+    }
+    public void set_code(int new_code){
+        this.code = new_code;
+    }
+    @Override
+    public String toString()
+    {
+        return this.id + " Название композиции - " + this.name +
+        ". Создана в жанре " + this.genre + " и исполнителем является " +
+        this.Performer + ".\n Длительность композиции - " + this.length + " секунд(ы). Код компакта - " +this.code +"\n";
+    }   
+}
+class Music_Salon 
+{
+    private final String name;
+    private final String adress;
+    private Music []collection;
+    public Music_Salon (String name, String adress, Music[]collection) throws IOException, wrongCode, wrongLength
+    {
+        this.name = name;
+        this.adress = adress;
+        this.collection = new Music[collection.length];
+        System.arraycopy(collection, 0, this.collection, 0, collection.length);
+    }
+    @Override
+     public String toString()
+    {
+            return "Музыкальный салон " + this.name + ". Расположен по адресу: " + this.adress + "\n" + Arrays.toString(this.collection);
+    }
+    public String get_name(){
+        return this.name;
+    }
+    public String get_adress(){
+        return this.adress;
+    }
+    public String getMusicLowerLength(int length) //меньше указанной длительности
+    {
+        StringBuffer sb = new StringBuffer();
+        for (Music a: this.collection)
+            if (a.get_length() < length)
+                sb.append(a);
+            return sb.toString();
+    }
+    public double get_AverageInCompact(int code)
+    {
+        double average = 0.0;
+        int count = 0;
+        for (Music a: this.collection)
+        {
+            if (a.get_code() == code)
+            {
+                average = average + a.get_length(); 
+                count++;
+            }
+        }
+        return  average/count;
+    }
+    public String get_Most_popular_information()
+    {
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        String MostPopPerf = null;
+        for (Music a : this.collection){
+            if(map.containsKey(a.get_Performer())) 
+            {
+                map.put(a.get_Performer(),
+                map.get(a.get_Performer()) + 1);
+            }
+            else 
+            {
+                map.put(a.get_Performer(), 1);
+            }
+                int p = 0;
+            for (String w : map.keySet()) {
+                if (p < map.get(w)){
+                    p = map.get(w);
+                    MostPopPerf = w;
+                }
+            }
+        }
+        StringBuffer sb = new StringBuffer();
+        for (Music a: this.collection)
+        {
+            if (a.get_Performer().equalsIgnoreCase(MostPopPerf))
+            {
+                sb.append(a);
+            }
+        }
+        String ret = "Самый популярный исполнитель - " + MostPopPerf +".\n Информация о его композициях: \n" + sb.toString();
+        return ret;
+    }
+    public String get_genre_length_information(){
+        String ret = null;
+        int length;
+        String []genres = {"rock", "opera", "symphony", "pop", "country", "techno", "pank", "folk"}; 
+        for (int i = 0; i < genres.length; i++)
+        {
+            length = 0;
+            for(Music a: this.collection)
+            {
+                if (a.get_genre().toString().equalsIgnoreCase(genres[i]))
+                length = length + a.get_length();
+            }
+            if (length>0)
+            ret = ret + "\nДлительность композиций в жанре " + genres[i] + " равна " + length+".";
+        }
+        return ret;
+    }
+}
+
+public class Main
+{
+	public static void main(String[] args) 
+	{
+	    try	
+	    {
+	        FileInputStream ifr = new FileInputStream("input.txt");
+            Scanner sr = new Scanner (ifr);
+            PrintStream pw = new PrintStream("output.txt");
+	        Music []collection = new Music[7];
+	        int i = 0;
+	        while (sr.hasNext())
+	        {
+	            String str = sr.nextLine();
+	            String []a = str.split("; ");
+	            String name = a[0];
+	            Genre genre = Genre.valueOf(a[1]);
+	            int code = Integer.parseInt(a[2]);
+	            String Performer = a[3];
+	            int length = Integer.parseInt(a[4]);
+	            collection[i++]= new Music(name, genre, code, Performer,length);
+	        }
+	        Music_Salon Salon1 = new Music_Salon ("Душевный", "Г.Минск, Проспект Победителей, д.14", collection);
+	        System.out.println("\n1 - Все композиции:");
+	        pw.println("\n1 - Все компакты:");
+	        //System.out.println(Arrays.toString(collection));
+	        System.out.println(Salon1);
+            pw.println(Salon1);
+            System.out.println("\n2 - Все композиции, меньше 250:");
+            pw.println("\n2 - Все композиции, меньше 250:");
+            System.out.println(Salon1.getMusicLowerLength(250));
+            pw.println(Salon1.getMusicLowerLength(250));
+            System.out.println("\n3 - Средняя длительность произведения в компекте с кодом 356:");
+            pw.println("\n3 - Средняя длительность произведения в компекте с кодом 356:");
+            System.out.println(Salon1.get_AverageInCompact(356)+" секунд(ы)");
+            pw.println(Salon1.get_AverageInCompact(356)+" секунд(ы)");
+            System.out.println("\n4 - инфорация о произведениях с самым популярным исполнителем");
+            pw.println("\n4 - инфорация о произведениях с самым популярным исполнителем");
+            System.out.println(Salon1.get_Most_popular_information());
+            pw.println(Salon1.get_Most_popular_information());
+            System.out.println("\n5 - информация о суммарной длительности произведений по каждому жанру:");
+            pw.println("\n5 - информация о суммарной длительности произведений по каждому жанру:");
+	        System.out.println(Salon1.get_genre_length_information());
+	        pw.println(Salon1.get_genre_length_information());
+            System.out.println("Количество композиций в коллекции := " + Music.get_count()+'\n');
+            System.out.println("Изменим код компакта 4-ой песни на 228");
+            collection[3].set_code(228);
+            for(Music ph : collection)
+                if(ph.get_id() == 4)
+                    System.out.print(ph);
+	    }
+	    catch (wrongLength e)
+	    {
+	        System.out.println("Некоторые композиции имеют отрицательую длительность!");
+	    }
+	    catch (wrongCode e)
+	    {
+	        System.out.println("Некоторые композиции имеют отрицательный код компакта!");
+	    }
+	    catch (IOException e)
+	    {
+	        System.out.println("Не удалось открыть файл!");
+	    }
+	}
+}

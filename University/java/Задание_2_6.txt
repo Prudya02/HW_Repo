@@ -1,0 +1,28 @@
+import java.util.Arrays;
+import java.util.Scanner;
+public class Main
+{
+	public static void main(String[] args) {
+		System.out.println("Введите кол-во чисел в последовательности");
+		Scanner sc = new Scanner(System.in);
+		int numb = sc.nextInt();
+		int begin_index = 0;
+		int end_index = 0;
+		int buffer = 0;
+		int swap_index = 0;
+		boolean bool = true;
+		Integer a1[] = new Integer[numb];
+		System.out.println("Введите последовательность:");
+		for (int i = 0; i<numb; i++)
+		{
+		    a1[i]=sc.nextInt();
+		}
+		System.out.println("Введенная вами последовательность:");
+	    System.out.println(Arrays.toString(a1));
+	    Arrays.sort(a1);
+	    System.out.println("Отсортированная последовательность:");
+	    System.out.println(Arrays.toString(a1));
+	    System.out.println("Медиана последовательности:");
+	    System.out.println(a1[numb/2]);
+	}
+}
